@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Contact Form With captcha</title>
+</head>
+
+<body>
+    <style>
+        .form {
+            margin-top: 10%;
+        }
+
+        body {
+            background: #4E6E81;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #contact-form {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #F9DBBB;
+            border: 1px solid #2E3840;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input,
+        textarea {
+            width: 96%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #c2E3840cc;
+        }
+
+        button {
+            background-color: #FF0303;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #captcha-text {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        @media screen and (max-width: 555px) {
+            .form {
+                transform: scale(0.6);
+            }
+        }
+    </style>
+    <div class="form">
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="captcha">Captcha:</label>
+                <input type="text" id="captcha" name="captcha" required>
+                <span id="captcha-text"></span>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        window.onload = function () {
+            generateCaptcha();
+        };
+
+        function generateCaptcha() {
+            const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let captcha = "";
+            for (let i = 0; i < 6; i++) {
+                captcha += characters[Math.floor(Math.random() * characters.length)];
+            }
+            document.querySelector("#captcha-text").innerHTML = captcha;
+        }
+
+        document.querySelector("#contact-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const enteredCaptcha = document.querySelector("#captcha").value;
+            const generatedCaptcha = document.querySelector("#captcha-text").innerHTML;
+            if (enteredCaptcha !== generatedCaptcha) {
+                alert("Incorrect captcha. Please try again.");
+                generateCaptcha();
+            } else {
+                alert("Form submitted successfully!");
+            }
+        });
+
+    </script>
+</body>
+
+</html>
